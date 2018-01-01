@@ -19,7 +19,7 @@ import com.community.jboss.leadmanagement.data.entities.Tag;
         ContactNumber.class,
         Tag.class,
         ContactTagJoin.class,
-}, version = 1)
+}, version = 1, exportSchema = false)
 public abstract class LeadDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "leadmanagement.db";
 

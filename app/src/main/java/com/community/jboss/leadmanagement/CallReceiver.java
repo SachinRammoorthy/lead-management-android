@@ -40,11 +40,6 @@ public class CallReceiver extends BroadcastReceiver {
         final ContactNumberDao dao = DbUtil.contactNumberDao(mContext);
         mContactNumber = dao.getContactNumber(number);
 
-        // Don't show the notification is the contact is not in the database
-        if (mContactNumber == null) {
-            return;
-        }
-
         if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
             showNotification();
         } else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {

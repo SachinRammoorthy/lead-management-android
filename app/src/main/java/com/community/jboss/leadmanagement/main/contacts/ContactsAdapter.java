@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,15 +122,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             detailDialog = new Dialog(context);
 
             TextView txtClose;
-            Button btnEdit;
             TextView popupName;
             TextView contactNum;
+            Button btnEdit;
+            Button btnCall;
+            Button btnMsg;
 
             detailDialog.setContentView(R.layout.popup_detail);
             txtClose = detailDialog.findViewById(R.id.txt_close);
             btnEdit = detailDialog.findViewById(R.id.btn_edit);
             popupName = detailDialog.findViewById(R.id.popup_name);
             contactNum = detailDialog.findViewById(R.id.txt_num);
+            btnCall = detailDialog.findViewById(R.id.btn_call);
+            btnMsg = detailDialog.findViewById(R.id.btn_msg);
 
             popupName.setText(name.getText());
             contactNum.setText(number.getText());
@@ -145,7 +150,27 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 }
             });
 
+
+            btnCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + number.getText().toString()));
+                        context.startActivity(intent);
+                }
+            });
+
+            btnMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
+                            + number.getText().toString())));
+                }
+            });
+
             detailDialog.show();
+
+
 
         }
 
