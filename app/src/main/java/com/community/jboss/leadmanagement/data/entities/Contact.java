@@ -7,9 +7,6 @@ import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
-/**
- * Created by carbonyl on 09/12/2017.
- */
 @Entity
 public class Contact {
     @PrimaryKey @NonNull

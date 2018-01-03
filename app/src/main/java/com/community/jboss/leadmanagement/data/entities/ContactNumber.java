@@ -8,9 +8,6 @@ import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
-/**
- * Created by carbonyl on 09/12/2017.
- */
 @Entity(foreignKeys = @ForeignKey(
         entity = Contact.class,
         parentColumns = "id",

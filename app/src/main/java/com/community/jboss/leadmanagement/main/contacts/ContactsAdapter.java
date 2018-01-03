@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -26,15 +28,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Filterable {
+    private List<Contact> contactsCopy;
     private List<Contact> mContacts;
     private ContactsAdapter mAdapter;
     public AdapterListener mListener;
+    public int sizeOfArray;
 
     public ContactsAdapter(AdapterListener listener) {
         mListener = listener;
         mAdapter = this;
         mContacts = new ArrayList<>();
+        contactsCopy = new ArrayList<>();
     }
 
     @Override
@@ -50,6 +55,48 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.bind(contact);
     }
 
+    private Contact mContact;
+    private Context mContext;
+
+    @Override
+    public Filter getFilter() {
+        mContacts = contactsCopy;
+
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String textToSearch = charSequence.toString();
+                if (textToSearch.isEmpty()) {
+                    mContacts = contactsCopy;
+                }
+
+                List<Contact> filteredNames = new ArrayList<>();
+                final ContactNumberDao dao = DbUtil.contactNumberDao(mContext);
+
+                for (Contact contact : mContacts) {
+                    if (contact.getName().toLowerCase().contains(textToSearch.toLowerCase())) {
+                        filteredNames.add(contact);
+                    } else if (dao.getContactNumbers(contact.getId()).get(0).getNumber().contains(textToSearch)) {
+                        filteredNames.add(contact);
+                    }
+                }
+
+                sizeOfArray = filteredNames.size();
+
+                FilterResults searchResultContacts = new FilterResults();
+                searchResultContacts.values = filteredNames;
+                return searchResultContacts;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mContacts = (ArrayList<Contact>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     @Override
     public int getItemCount() {
         return mContacts.size();
@@ -58,6 +105,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public void replaceData(List<Contact> contacts) {
         mContacts = contacts;
         notifyDataSetChanged();
+        contactsCopy = contacts;
     }
 
     public interface AdapterListener {
@@ -89,7 +137,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
             deleteButton.setOnClickListener(v1 -> {
                 CustomDialogBox dialogBox = new CustomDialogBox();
-                dialogBox.showAlert((Activity) mContext,mContact,mAdapter);
+                dialogBox.showAlert((Activity) mContext, mContact, mAdapter);
             });
         }
 
@@ -100,6 +148,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             name.setText(contact.getName());
             number.setText(getNumber());
         }
+
 
         /**
          * TODO:
@@ -144,9 +193,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     context.startActivity(intent);
                 }
             });
-
             detailDialog.show();
-
         }
 
         @Override
