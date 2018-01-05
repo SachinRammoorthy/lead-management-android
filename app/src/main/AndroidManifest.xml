@@ -4,6 +4,8 @@
     package="com.community.jboss.leadmanagement">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".LeadApp"
@@ -43,8 +45,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".SettingsActivity"
-            android:theme="@style/AppTheme"
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".main.MainActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".main.contacts.importcontact.ImportContactActivity"
             android:parentActivityName=".main.MainActivity"/>
     </application>
 
