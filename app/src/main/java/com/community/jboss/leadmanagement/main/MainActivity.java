@@ -77,6 +77,10 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        mViewModel.getSelectedNavItem().observe(this, this::displayNavigationItem);
+
         NavigationView navView = findViewById(R.id.nav_view);
         View header =  navView.getHeaderView(0);
 
@@ -84,24 +88,21 @@ public class MainActivity extends BaseActivity
         header.findViewById(R.id.sign_out_button).setOnClickListener(this);
 
         FirebaseApp.initializeApp(this, new FirebaseOptions.Builder()
-                .setApiKey("AIzaSyAx3g5DzbnO19MpZiGq2MSWiso_AGgzUFI")
-                .setApplicationId("1:423528065106:android:9dd99eb89b0017e8")
-                .setDatabaseUrl("https://lead-management-140b7.firebaseio.com")
-                .setGcmSenderId("423528065106")
-                .setStorageBucket("lead-management-140b7.appspot.com").build());
+                .setApiKey("YOUR_API_KEY")
+                .setApplicationId("YOUR_APPLICATION_ID")
+                .setDatabaseUrl("YOUR_DB_URL")
+                .setGcmSenderId("YOUR_SENDER_ID")
+                .setStorageBucket("YOUR_STORAGE_BUCKET").build());
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("423528065106-o5i815nhjshb25bs0bc1p2b2n3p783p7.apps.googleusercontent.com")
+                .requestIdToken("YOUR_REQUEST_ID_TOKEN")
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
 
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-
-        mViewModel.getSelectedNavItem().observe(this, this::displayNavigationItem);
 
         permissionManager = new PermissionManager(this, this);
         if (!permissionManager.permissionStatus(Manifest.permission.READ_PHONE_STATE)) {
@@ -217,15 +218,6 @@ public class MainActivity extends BaseActivity
                 .commit();
         setTitle(newFragment.getTitle());
     }
-
-    public void initFab() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-        if (fragment instanceof ContactsFragment) {
-            fab.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), EditContactActivity.class)));
-            fab.setImageResource(R.drawable.ic_add_white_24dp);
-        }
-    }
-
 
     @Override
     public void onStart() {
@@ -347,4 +339,11 @@ public class MainActivity extends BaseActivity
     }
 
 
+    public void initFab() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if (fragment instanceof ContactsFragment) {
+            fab.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), EditContactActivity.class)));
+            fab.setImageResource(R.drawable.ic_add_white_24dp);
+        }
+    }
 }

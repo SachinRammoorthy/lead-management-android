@@ -33,7 +33,6 @@ public class ContactsFragment extends MainFragment implements ContactsAdapter.Ad
     private ContactsFragmentViewModel mViewModel;
     private ContactsAdapter mAdapter;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
