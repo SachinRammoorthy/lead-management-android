@@ -23,6 +23,7 @@ import com.community.jboss.leadmanagement.R;
 import com.community.jboss.leadmanagement.SettingsActivity;
 import com.community.jboss.leadmanagement.main.contacts.ContactsFragment;
 import com.community.jboss.leadmanagement.main.contacts.editcontact.EditContactActivity;
+import com.community.jboss.leadmanagement.main.contacts.importcontact.ImportContactActivity;
 import com.community.jboss.leadmanagement.main.groups.GroupsFragment;
 
 import butterknife.BindView;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     private MainActivityViewModel mViewModel;
+    private PermissionManager permissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         mViewModel.getSelectedNavItem().observe(this, this::displayNavigationItem);
 
-        PermissionManager permissionManager = new PermissionManager(this, this);
+        permissionManager = new PermissionManager(this, this);
         if (!permissionManager.permissionStatus(Manifest.permission.READ_PHONE_STATE)) {
             permissionManager.requestPermission(ID, Manifest.permission.READ_PHONE_STATE);
         }
@@ -107,6 +109,13 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }else if( id == R.id.action_import ){
+            if(permissionManager.permissionStatus(Manifest.permission.READ_CONTACTS)){
+                startActivity(new Intent(MainActivity.this,ImportContactActivity.class));
+            }else{
+                permissionManager.requestPermission(109,Manifest.permission.READ_CONTACTS);
+            }
             return true;
         }
 

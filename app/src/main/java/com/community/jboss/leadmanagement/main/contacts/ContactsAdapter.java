@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -27,15 +29,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> implements Filterable {
     private List<Contact> mContacts;
     private ContactsAdapter mAdapter;
     public AdapterListener mListener;
+    private List<Contact> spareData;
 
     public ContactsAdapter(AdapterListener listener) {
         mListener = listener;
         mAdapter = this;
         mContacts = new ArrayList<>();
+        spareData = new ArrayList<>();
     }
 
     @Override
@@ -58,7 +62,37 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     public void replaceData(List<Contact> contacts) {
         mContacts = contacts;
+        spareData = contacts;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        mContacts = spareData;
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String data = constraint.toString();
+                if(data.isEmpty()){
+                    mContacts = spareData;
+                }
+                List<Contact> filteredList = new ArrayList<>();
+                for(Contact contact: mContacts){
+                    if(contact.getName().toLowerCase().contains(data.toLowerCase())){
+                        filteredList.add(contact);
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mContacts = (ArrayList<Contact>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public interface AdapterListener {
@@ -91,6 +125,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             deleteButton.setOnClickListener(v1 -> {
                 CustomDialogBox dialogBox = new CustomDialogBox();
                 dialogBox.showAlert((Activity) mContext,mContact,mAdapter);
+                deleteButton.setVisibility(View.INVISIBLE);
             });
         }
 
