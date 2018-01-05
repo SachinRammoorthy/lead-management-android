@@ -72,9 +72,6 @@ public class MainActivity extends BaseActivity
     private MainActivityViewModel mViewModel;
     private PermissionManager permissionManager;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,11 +158,11 @@ public class MainActivity extends BaseActivity
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
-        } else if (id == R.id.action_import) {
-            if (permissionManager.permissionStatus(Manifest.permission.READ_CONTACTS)) {
-                startActivity(new Intent(MainActivity.this, ImportContactActivity.class));
-            } else {
-                permissionManager.requestPermission(109, Manifest.permission.READ_CONTACTS);
+        }else if( id == R.id.action_import ){
+            if(permissionManager.permissionStatus(Manifest.permission.READ_CONTACTS)){
+                startActivity(new Intent(MainActivity.this,ImportContactActivity.class));
+            }else{
+                permissionManager.requestPermission(109,Manifest.permission.READ_CONTACTS);
             }
             return true;
         }
