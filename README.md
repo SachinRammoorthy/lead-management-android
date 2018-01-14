@@ -25,6 +25,7 @@ $ git clone https://github.com/[YOUR-USERNAME]/lead-management-android.git
 $ git checkout -b [YOUR_BRANCH_NAME]
 ```
 Make sure that the branch name is meaningful and related to the changes you are making. For example, if you are updating the documentation, a suitable branch name would be `docsUpdate`. Branches are useful when you have multiple Pull Requests on the same repository.
+
 **4.** **Open the project** using [Android Studio](https://developer.android.com/studio/index.html) by clicking **Open an existing Android Studio Project** 
 ![](https://lh4.googleusercontent.com/ttV9QNEuOltxmSiZSfRZxDPy_ZetUaBwmm7MeyXTo6xNB8nc6kFAbwU5zWWLaU0AB1xyP8vigMV9Hm7WmJrA=w1863-h978)
 
@@ -54,8 +55,8 @@ $ git commit -m "DESCRIBE YOUR CHANGES HERE"
 ```
 $ git push origin YOUR_BRANCH_NAME
 ```
-
 Make sure you push only to your branch.
+
 **5.** **Create a Pull Request** by clicking the _New Pull Request_ button on your repository page.
 
 ## Help
