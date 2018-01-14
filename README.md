@@ -19,7 +19,12 @@ This app is currently in development, means that in future many more features wi
 ```
 $ git clone https://github.com/[YOUR-USERNAME]/lead-management-android.git
 ```
-**3.** **Open project** using [Android Studio](https://developer.android.com/studio/index.html) by clicking **Open an existing Android Studio Project** 
+**3.** **Create a new branch** by running the following on terminal/command prompt:
+```
+$ git checkout -b [YOUR_BRANCH_NAME]
+```
+Make sure that the branch name is meaningful and related to the changes you are making. For example, if you are updating the documentation, a suitable branch name would be `docsUpdate`. Branches are useful when you have multiple Pull Requests on the same repository.
+**3.** **Open the project** using [Android Studio](https://developer.android.com/studio/index.html) by clicking **Open an existing Android Studio Project** 
 ![](https://lh4.googleusercontent.com/ttV9QNEuOltxmSiZSfRZxDPy_ZetUaBwmm7MeyXTo6xNB8nc6kFAbwU5zWWLaU0AB1xyP8vigMV9Hm7WmJrA=w1863-h978)
 
 **3.** **Run project on AVD** (android virtual device) by clicking **Run** button on Android Studio Toolbar
@@ -32,13 +37,19 @@ $ git clone https://github.com/[YOUR-USERNAME]/lead-management-android.git
 ```
 $ git add .
 ```
+The above command will add all files to the staging area. To add only specific files, run `$ git add path/to/your/file` instead.
 **3.** **Commit** changes 
 ```
 $ git commit -m "DESCRIBE YOUR CHANGES HERE"
 ```
 **4.** **Push** your changes
 ```
-$ git push origin
+$ git push origin YOUR_BRANCH_NAME
 ```
-**5.** **Send Pull Request** by clicking new pull request button on your repository page
+Make sure you push only to your branch.
+**5.** **Create a Pull Request** by clicking the _New Pull Request_ button on your repository page.
+
+
+Happy Coding!
+
 
